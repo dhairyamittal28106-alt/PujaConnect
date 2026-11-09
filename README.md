@@ -2,31 +2,29 @@
 
 **Your traditions, thoughtfully taken care of.**
 
-PujaConnect is a mobile-first prototype for discovering Hindu pujas and sample pandit profiles, then walking through a clear booking request flow. It is built with Expo, React Native, TypeScript, and Expo Router for Android, iOS, and web.
+PujaConnect is a mobile-first Hindu puja and pandit-booking marketplace prototype built with Expo SDK 58, React Native, TypeScript, and Expo Router for Android, iOS, and web.
 
 ## Current status
 
-This repository contains a front-end prototype backed by local sample data. It is not connected to a booking backend, payment provider, authentication service, real availability, or verified pandit records. Prices, ratings, reviews, profiles, locations, and date slots are illustrative. The booking flow ends with an explicit unconfirmed request preview; it does not place a booking or take payment.
+Supabase integration is implemented, but this repository does not include credentials or real marketplace records. Without valid Supabase credentials, the app runs a clearly labelled demo catalogue. With Supabase configured, the app reads live records and does not silently fall back to demo data. SMS delivery, the database migration, active catalogue content, pandit verification, and service assignments require project setup. Payments are not integrated.
 
 ## Features
 
-- Branded splash and three-step onboarding
-- Guest browsing and phone/OTP interface clearly marked as a demo
-- Home screen with ceremony discovery and sample listings
-- Explore screen with search, category filters, and location context
-- Puja detail pages with ceremony description, duration, languages, inclusions, exclusions, and sample profiles
-- Sample pandit profiles with experience, languages, service area, specialisations, and indicative dakshina
-- Four-step booking request preview for date, time, address, language, samagri, and review
-- Unconfirmed booking preview with no payment processing
-- Upcoming, completed, and cancelled booking views
-- Profile, help, and FAQ screens
-- Shared design tokens and reusable UI components
+- Branded splash screen, onboarding, and guest browsing
+- Supabase Phone OTP authentication with persistent session restoration
+- Live active puja categories and services, plus verified pandit listings
+- Puja and pandit details with sample-only data clearly labelled in demo mode
+- Four-step booking request flow with database-calculated prices and saved price snapshots
+- Customer booking history, status details, and eligible cancellation
+- Pandit profile registration, assigned booking inbox, accept/decline, and eligible completion actions
+- Profile editing, support FAQs, loading states, empty states, and retryable errors
+- Typed Supabase data services, SQL migrations, RLS, and database booking functions
 
 ## Requirements
 
 - Node.js 22.13 or later for Expo SDK 58
 - npm
-- Expo Go compatible with SDK 58, or an Android/iOS development build
+- A current Expo Go compatible with SDK 58, or an Android/iOS development build
 
 ## Getting started
 
@@ -35,7 +33,7 @@ npm install
 npm start
 ```
 
-Use the Expo CLI prompt or the QR code to open the app on a compatible device. For a specific target:
+Use the Expo CLI prompt or QR code to open the app. Run on a specific target with:
 
 ```sh
 npm run android
@@ -43,7 +41,13 @@ npm run ios
 npm run web
 ```
 
-## Checks
+## Supabase configuration
+
+Copy `.env.example` to `.env` and set `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Apply the migration in `supabase/migrations/`, configure Phone OTP and an SMS provider, then add active catalogue entries and review pandit profiles. Never put a service-role key or other privileged secret in the app.
+
+See [SUPABASE_SETUP.md](SUPABASE_SETUP.md) for project setup, migration, SMS, pandit verification, and booking test instructions. Database RLS checks are in `supabase/tests/marketplace_security.sql` and require a local Supabase stack with Docker.
+
+## Verification commands
 
 ```sh
 npm run typecheck
@@ -55,31 +59,24 @@ npx expo export --platform web
 ## Project structure
 
 ```text
-app/
-  (tabs)/            Home, Explore, Bookings, Profile
-  booking/            Booking flow and unconfirmed request preview
-  pandit/             Pandit profile route
-  puja/               Puja detail route
-  auth.tsx            Guest-first sign-in demo
-  onboarding.tsx      Onboarding sequence
-  otp.tsx             OTP demo screen
-  splash.tsx          Brand splash screen
-  support.tsx         FAQs and support information
-src/
-  components/         Shared visual components
-  data/               Local sample catalogue
-  theme/              Design tokens
+app/                  Expo Router screens and routes
+src/auth/             Persistent auth session context
+src/components/       Shared interface and loading components
+src/data/             Clearly labelled local demo catalogue
+src/lib/              Typed Supabase client and database types
+src/services/         Auth and marketplace data access
+src/theme/            Shared design tokens
+supabase/migrations/  Database schema, RLS, and booking functions
+supabase/tests/       Database security checks
 ```
 
-## Configuration and integrations
+## Important limitations
 
-- Expo app configuration: `app.json`
-- TypeScript and import aliases: `tsconfig.json`
-- App entry and navigation: `app/_layout.tsx`
-- Sample catalogue: `src/data/catalog.ts`
-- Shared colours and spacing: `src/theme/tokens.ts`
-
-Before launch, connect a backend for catalogue and availability data, persist booking requests, add an authentication provider and a payment provider, and replace all sample pandit, rating, location, and pricing content with reviewed real data. Add customer support operations and publish clear cancellation and privacy policies before accepting payments or bookings.
+- The app has no payment integration or administrator interface.
+- Catalogue, verification, and pandit-service assignments require administrator setup.
+- Booking time choices are request preferences, not real availability. An assigned pandit's overlapping accepted bookings are rejected by the database.
+- Ratings and customer reviews are not stored in the database and are hidden in live mode.
+- No credentials or real customer or pandit records are included in the repository.
 
 ## License
 
