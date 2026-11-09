@@ -1,0 +1,8 @@
+import { useRouter } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Heading, Label, PrimaryButton } from '@/components/ui';
+import { colors } from '@/theme/tokens';
+export default function OtpScreen() { const router = useRouter(); return <SafeAreaView style={s.safe}><View style={s.content}><Pressable onPress={() => router.back()} style={s.back}><Feather name="arrow-left" size={19} color={colors.ink} /></Pressable><Label>PHONE VERIFICATION</Label><Heading>Enter your code.</Heading><Text style={s.copy}>OTP verification is a visual demo. No code was sent.</Text><View style={s.row}>{[1, 2, 3, 4, 5, 6].map(x => <View key={x} style={s.box}><Text style={s.number}>—</Text></View>)}</View><Text style={s.copy}>Connect an authentication provider to enable sign in.</Text><PrimaryButton title="Continue as guest" onPress={() => router.replace('/(tabs)')} /></View></SafeAreaView>; }
+const s = StyleSheet.create({ safe: { flex: 1, backgroundColor: colors.canvas }, content: { flex: 1, padding: 25, justifyContent: 'center', gap: 17 }, back: { position: 'absolute', top: 18, left: 22, width: 40, height: 40, borderRadius: 15, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center' }, copy: { color: colors.muted, fontSize: 12, lineHeight: 18 }, row: { flexDirection: 'row', justifyContent: 'space-between', gap: 8 }, box: { flex: 1, height: 52, borderRadius: 13, borderWidth: 1, borderColor: colors.line, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' }, number: { fontSize: 17, color: colors.muted } });

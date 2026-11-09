@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "PujaConnect",
+    "slug": "pujaconnect",
+    "scheme": "pujaconnect",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": true },
+    "android": { "adaptiveIcon": { "backgroundColor": "#F7F4EE" }, "package": "com.pujaconnect.app" },
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.pujaconnect.app" }
+  }
+}
